@@ -5,7 +5,7 @@ module RailsAdmin
         RailsAdmin::Config::Actions.register(self)
 
         register_instance_option :pjax? do
-          true
+          false
         end
 
         register_instance_option :root? do
@@ -63,7 +63,7 @@ module RailsAdmin
                 message = "<strong>#{I18n.t('admin.actions.nestable.error')}</strong>: #{e}"
               end
 
-              render text: message
+              render plain: message
             end
 
             if request.get?
@@ -71,7 +71,7 @@ module RailsAdmin
 
               case @options[:scope].class.to_s
                 when 'Proc'
-                  query.merge!(@options[:scope].call)
+                  query.merge!(@options[:scope].call(params))
                 when 'Symbol'
                   query.merge!(@abstract_model.model.public_send(@options[:scope]))
               end
