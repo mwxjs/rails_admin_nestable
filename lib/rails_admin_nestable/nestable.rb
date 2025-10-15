@@ -5,7 +5,7 @@ module RailsAdmin
         RailsAdmin::Config::Actions.register(self)
 
         register_instance_option :pjax? do
-          true
+          false
         end
 
         register_instance_option :root? do
@@ -75,7 +75,7 @@ module RailsAdmin
 
               case @options[:scope].class.to_s
                 when 'Proc'
-                  query.merge!(@options[:scope].call)
+                  query.merge!(@options[:scope].call(params))
                 when 'Symbol'
                   if session[:selected_space_id].present?
                     query.merge!(@abstract_model.model.public_send(@options[:scope], session[:selected_space_id]))
